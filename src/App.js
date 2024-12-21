@@ -3,16 +3,6 @@ import React from 'react';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const randomColor = () => {
-  const hexChars = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += hexChars[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
-
-
 const Background = (props) => {
 
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -22,7 +12,7 @@ const Background = (props) => {
   return (
     <div id='quote-box'>
       <div id='tweet-box'>
-        <a id='tweet-quote' href={tweetUrl} target='_blank' rel='noopener noreferrer'><i className='fa fa-twitter'></i></a>
+        <a id='tweet-quote' href={tweetUrl} target='_blank' rel='noopener noreferrer'><i style={{color: props.changeColor}} className='fa fa-twitter'></i></a>
       </div>
       <div id='author' style={{backgroundColor: props.changeColor}}>
         <h3 style={{padding: 5, paddingBottom: 15}}>{props.author}</h3>
@@ -45,10 +35,20 @@ class App extends React.Component {
     this.state = {
       getQuote: 'He who makes a beast of himself, gets rid of the pain of being a man',
       author: 'Samuel Johnson',
-      newColor: randomColor(),
+      newColor: 'rgb(0, 160, 255)',
       error: null
     }
+    this.randomColor = this.randomColor.bind(this)
     this.handleClick = this.handleClick.bind(this)
+  }
+
+  randomColor() {
+    const hexChars = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += hexChars[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   async handleClick() {
@@ -75,6 +75,7 @@ class App extends React.Component {
           this.setState({
             getQuote: quote,
             author: author,
+            newColor: this.randomColor()
           })
       } catch (error) {
          this.setState({
